@@ -3,6 +3,8 @@ from django.shortcuts import render, get_object_or_404
 from cart.forms import CartAddProductForm
 from .models import Category, Product
 from .populateDB import populateDatabase
+from haystack.query import SearchQuerySet
+from django.shortcuts import render
 
 def product_list(request, category_slug=None):
     if Category.objects.filter(name="Ratones inalámbricos").count() == 0:
@@ -36,4 +38,7 @@ def product_detail(request, id, slug):
     {'product': product, 'cart_product_form': cart_product_form}
     )
     
-    
+def search(request):
+    query = request.GET.get('q', '')
+    results = SearchQuerySet().filter(content=query) if query else []
+    return render(request, 'search_results.html', {'results': results, 'query': query})    

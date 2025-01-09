@@ -1,0 +1,18 @@
+{% extends "shop/base.html" %}
+
+{% block content %}
+  <h1>Resultados de búsqueda</h1>
+  <form method="get" action="{% url 'shop:search' %}">
+    <input type="text" name="q" value="{{ query }}" placeholder="Buscar productos">
+    <button type="submit">Buscar</button>
+  </form>
+  <ul>
+    {% for result in results %}
+      <li>
+        <a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a>
+      </li>
+    {% empty %}
+      <p>No se encontraron resultados.</p>
+    {% endfor %}
+  </ul>
+{% endblock %}
